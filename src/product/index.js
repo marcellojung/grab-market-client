@@ -7,12 +7,9 @@ function ProductPage() {
   const [product, setProduct] = useState(null); //처음 값을 null로
   useEffect(function () {
     axios //postman의 데이터를 가져온다.
-      .get(
-        "https://8ece7723-fe3b-4957-be17-25f7da96a4fc.mock.pstmn.io/products/" +
-          id
-      )
+      .get(`http://localhost:8080/products/${id}`)
       .then(function (result) {
-        setProduct(result.data);
+        setProduct(result.data.product);
         //console.log(product);
         //console.log(result.data);
       })
@@ -28,7 +25,7 @@ function ProductPage() {
   return (
     <div>
       <div id="image-box">
-        <img src={"/" + product.imageURL} />
+        <img src={"/" + product.imageUrl} />
       </div>
       <div id="profile-box">
         <img src="/images/icons/avatar.png" />

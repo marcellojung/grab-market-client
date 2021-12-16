@@ -2,16 +2,18 @@ import React from "react";
 import "./index.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 //import {BrowserRouter} from 'react-router-dom';
+dayjs.extend(relativeTime);
+
 function MainPage() {
   const [products, setproducts] = React.useState([]);
   React.useEffect(function () {
     axios
-      .get(
-        "https://8ece7723-fe3b-4957-be17-25f7da96a4fc.mock.pstmn.io/products"
-      )
+      .get("http://localhost:8080/products")
       .then(function (result) {
-        const products = result.data.products;
+        const products = result.data.product;
         setproducts(products);
       })
       .catch(function (error) {
@@ -31,18 +33,23 @@ function MainPage() {
             <div className="product-card">
               <Link classsName="product-link" to={`/products/${product.id}`}>
                 <div>
-                  <img className="product-img" src={product.imageURL} />
+                  <img className="product-img" src={product.imageUrl} />
                 </div>
                 <div>
                   <div className="product-contents">
                     <span className="product-name">{product.name}</span>
                     <span className="product-price">{product.price}원</span>
-                    <div className="product-seller">
-                      <img
-                        className="product-avatar"
-                        src="images/icons/avatar.png"
-                      />
-                      <span>{product.seller}</span>
+                    <div className="product-footer">
+                      <div className="product-seller">
+                        <img
+                          className="product-avatar"
+                          src="images/icons/avatar.png"
+                        />
+                        <span>{product.seller}</span>
+                      </div>
+                      <span className="product-date">
+                        {dayjs(product.createdAt).fromNow()}
+                      </span>
                     </div>
                   </div>
                 </div>
